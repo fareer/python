@@ -1,0 +1,43 @@
+from multiprocessing import Process
+import requests
+import re
+headers ={
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
+}
+
+def cms(name):
+    for i in range (1,17):
+        get_url = 'http://www.anquan.us/search?keywords='+ name +'&&content_search_by=by_bugs&&search_by_html=False&&page='+ str(i)
+        print("正在爬去第%d"%i)
+
+        req = requests.get(get_url,headers =headers)
+        result = re.findall(r'k\">\s(.*?)</a>', req.text, re.S)
+        with open(r"C:\Users\76754\Desktop\picture\aaa.txt","a",) as f:
+            for x in result:
+                f.write(x + '\n')
+
+def neirong(same):
+    for q in range (1,17):
+        get_url = 'http://www.anquan.us/search?keywords='+ same +'&&content_search_by=by_bugs&&search_by_html=False&&page='+ str(q)
+        print("正在爬去第%d"%q)
+
+        req = requests.get(get_url,headers =headers)
+        result = re.findall(r'k\">\s(.*?)</a>', req.text, re.S)
+        with open(r"C:\Users\76754\Desktop\picture\sss.txt","a",) as f:
+            for x in result:
+                f.write(x + '\n')
+
+
+
+if __name__ =="__main__":
+    print("这是一个多进程爬虫")
+    p = Process(target=cms ,args=('cms',))
+    Q = Process(target=neirong,args=('内容管理',))
+
+    p.start()
+    Q.start()
+    p.join()
+    Q.join()
+    print("爬取结束")
+
+
