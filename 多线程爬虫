@@ -1,0 +1,35 @@
+
+import threading
+import requests
+import re
+headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'}
+def crawler(name):
+    for i in range (1,17):
+        get_url = 'http://www.anquan.us/search?keywords='+ name +'&&content_search_by=by_bugs&&search_by_html=False&&page='+ str(i)
+        print("正在爬去第%d页"%i)
+
+        req = requests.get(get_url,headers =headers)
+        result = re.findall(r'k\">\s(.*?)</a>', req.text, re.S)
+        with open(r"C:\Users\76754\Desktop\picture\aaa.txt","a",) as f:
+            for x in result:
+                f.write(x + '\n')
+
+
+
+if __name__ == '__main__':
+    print('thread %s is running...' % threading.current_thread().name)
+
+thread_list = []
+t1 = threading.Thread(target=crawler, args=('Python',))
+t2 = threading.Thread(target=crawler, args=('新浪',))
+thread_list.append(t1)
+thread_list.append(t2)
+
+for t in thread_list:
+    t.setDaemon(True)  # 设置为守护线程
+    t.start()
+    t.join()  # 在这个子线程完成运行之前，主线程将一直被阻塞
+
+print('thread %s ended.' % threading.current_thread().name)
+
