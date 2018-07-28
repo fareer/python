@@ -1,0 +1,23 @@
+import urllib.request
+import re
+import os
+#urllib.request.urlretrieve("http://search.jd.com/Search?keyword=%E5%B0%91%E5%A5%B3%E6%96%87%E8%83%B8&enc=utf-8&spm=2.1.2"
+#,filename=r"C:\Users\76754\Desktop\python\wenxiong.html")
+url = "http://search.jd.com/Search?keyword=%E5%B0%91%E5%A5%B3%E6%96%87%E8%83%B8&enc=utf-8&spm=2.1.2"
+toPath = r"C:\Users\76754\Desktop\python"
+def imageCrawler(url , topath):
+    headers = {"User-Agent:Mozilla/5.0(Windows;U;WindowsNT6.1;en-us)AppleWebKit/534.50(KHTML,likeGecko)Version/5.1Safari/534.50"}
+    req = urllib.request.Request(url , headers=headers)
+    response = urllib.request.urlopen(req)
+    HtmlStr = response.read().decode("utf-8")
+
+    pat = r'<img src="//（.*?）" width="102" height="36">'
+    re_image = re.compile(pat, re.S)
+    imageList = re_image.findall(HtmlStr)
+    num = 1
+    for imageUrl in imageList:
+        path = os.path.join(topath, str(num)+".jpg")
+        num += 1
+        urllib.request.urlretrieve("http://"+imageUrl,filename=path)
+
+
