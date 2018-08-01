@@ -1,0 +1,38 @@
+from selenium import webdriver
+import time
+browser = webdriver.Firefox()
+url = 'https://cn.bing.com/'
+browser.get(url)
+input= browser.find_element_by_id('sb_form_q')
+input.send_keys("卡尔")
+findbottom = browser.find_element_by_id("sb_form_go")
+findbottom.click()
+time.sleep(3)
+i=1
+while i<100:
+    qqq = browser.find_element_by_class_name("sb_pagN_bp")
+    time.sleep(3)
+    qqq.click()
+    i += 1
+    for link in browser.find_elements_by_xpath('/html//h2/a'):
+        word = link.get_attribute('href')
+        title = link.get_attribute('text')
+
+        with open(r"C:\Users\76754\Desktop\git\aaa.txt","a",encoding='utf-8')as  f:
+            f.write(word+title+'\n')
+            # qqq = browser.find_element_by_class_name("sb_pagN_bp")
+            # time.sleep(3)
+            # qqq.click()
+            # i +=1
+else:
+    print("终于爬完了")
+
+
+
+
+
+
+
+
+
+
