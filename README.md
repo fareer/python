@@ -1,2 +1,2 @@
 # python
-all code
+用于记录学习爬虫时的代码
